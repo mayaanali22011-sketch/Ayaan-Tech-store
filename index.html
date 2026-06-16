@@ -3,232 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaFlow Tech Solutions - Advanced Dashboard</title>
+    <title>NexaFlow Console - Ultimate Enterprise Edition</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
-        /* Modern Smooth Hover Effect for Cards */
-        .stat-card { 
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        body { transition: background-color 0.4s ease, color 0.4s ease; }
+        .premium-card { 
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .stat-card:hover { 
-            transform: translateY(-8px) scale(1.01); 
-            box-shadow: 0 25px 40px -15px rgba(139, 92, 246, 0.25);
+        .dark .premium-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
         }
-
-        /* Nav link custom sliding line */
-        .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after { 
-            content: ''; 
-            position: absolute; 
-            width: 0; 
-            height: 2px; 
-            bottom: -4px; 
-            left: 0; 
-            background: linear-gradient(90deg, #8b5cf6, #ec4899); 
-            transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        .premium-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px -15px rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .nav-link:hover::after { width: 100%; }
-
-        /* Dynamic Background Glows */
-        .glow-blob {
-            filter: blur(80px);
-            opacity: 0.4;
-            mix-blend-mode: multiply;
-            animation: floatGlow 12s infinite alternate;
+        
+        /* Particle Pulse Wave Animation */
+        @keyframes dynamicPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
-        .glow-blob-2 {
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: floatGlow 8s infinite alternate-reverse;
-        }
-
-        @keyframes floatGlow {
-            0% { transform: translate(0px, 0px) scale(1); }
-            100% { transform: translate(40px, 60px) scale(1.2); }
-        }
-
-        /* Smooth custom transitions for dark mode toggle */
-        body { transition: background-color 0.4s ease, color 0.4s ease; }
-        .card-theme { transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
+        .pulse-wave { animation: dynamicPulse 2s infinite; }
+        
+        /* Premium custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 p-4 md:p-8 min-h-screen relative overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 p-4 md:p-8 min-h-screen relative overflow-x-hidden">
 
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-300 dark:bg-purple-900/30 rounded-full glow-blob pointer-events-none"></div>
-    <div class="absolute bottom-[10%] right-[-5%] w-96 h-96 bg-blue-300 dark:bg-blue-900/30 rounded-full glow-blob-2 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+    <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-purple-400/10 dark:bg-purple-600/5 blur-[120px] rounded-full pointer-events-none animate-pulse"></div>
 
     <div class="max-w-6xl mx-auto space-y-8 relative z-10">
         
-        <header class="animate__animated animate__fadeInDown card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <header class="animate__animated animate__fadeInDown premium-card p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
             <div>
                 <div class="flex items-center gap-3">
-                    <h1 class="text-3xl font-black bg-gradient-to-r align-middle from-purple-600 to-pink-500 bg-clip-text text-transparent">NexaFlow Console</h1>
-                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 border border-purple-200/50">v2.4</span>
+                    <h1 class="text-3xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">NexaFlow Console</h1>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-300 border border-purple-100 dark:border-purple-900">PREMIUM v3.0</span>
                 </div>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Enterprise Management & Operational Analytics</p>
-                <nav class="flex gap-6 mt-4 text-sm font-semibold">
+                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1 font-medium">Enterprise Management & Operational Analytics Engine</p>
+                <nav class="flex gap-6 mt-4 text-xs font-bold tracking-wide uppercase">
                     <a href="index.html" class="nav-link text-purple-600 dark:text-purple-400">🏠 Dashboard</a>
-                    <a href="products.html" class="nav-link text-slate-600 dark:text-slate-300">📦 Products</a>
+                    <a href="products.html" class="nav-link text-slate-500 dark:text-slate-400">📦 Products</a>
                 </nav>
             </div>
             
             <div class="flex flex-row md:flex-col items-end gap-3 w-full md:w-auto justify-between">
-                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm border border-slate-200 dark:border-slate-600 cursor-pointer" title="Toggle Theme">
-                    <span class="dark:hidden">🌙 Dark Mode</span>
-                    <span class="hidden dark:inline">☀️ Light Mode</span>
-                </button>
-                
-                <div class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-3 border border-emerald-100 dark:border-emerald-900/30 shadow-inner">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    System Operational
+                <button onclick="document.documentElement.classList.toggle('dark')" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all cursor-pointer">🌓 Toggle Theme</button>
+                <div class="bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2.5 border border-emerald-200/40 dark:border-emerald-900/40 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-wave"></span>
+                    System Live & Operational
                 </div>
             </div>
         </header>
 
         <section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm stat-card" style="animation-delay: 0.1s;">
+            <div class="animate__animated animate__fadeInUp premium-card p-6 rounded-2xl shadow-sm" style="animation-delay: 0.1s;">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Monthly Revenue</span>
-                    <span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs px-2.5 py-1 rounded-lg font-extrabold shadow-sm animate-pulse">+12.4%</span>
+                    <span class="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[10px] px-2 py-0.5 rounded-md font-black animate-pulse">+12.4%</span>
                 </div>
-                <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">342,500 <span class="text-lg font-bold text-purple-500">PKR</span></h3>
-                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1">Compared to last month</p>
+                <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">342,500 <span class="text-sm font-bold text-purple-500">PKR</span></h3>
+                <p class="text-slate-400 dark:text-slate-500 text-[11px] mt-1">Refreshed 2 mins ago</p>
             </div>
-
-            <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm stat-card" style="animation-delay: 0.2s;">
+            <div class="animate__animated animate__fadeInUp premium-card p-6 rounded-2xl shadow-sm" style="animation-delay: 0.2s;">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Deployments</span>
-                    <span class="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs px-2.5 py-1 rounded-lg font-extrabold shadow-sm">Live</span>
+                    <span class="bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 text-[10px] px-2 py-0.5 rounded-md font-black">Cluster Live</span>
                 </div>
                 <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">1,240</h3>
-                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1">Across active client nodes</p>
+                <p class="text-slate-400 dark:text-slate-500 text-[11px] mt-1">Across active client nodes</p>
             </div>
-
-            <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm stat-card" style="animation-delay: 0.3s;">
+            <div class="animate__animated animate__fadeInUp premium-card p-6 rounded-2xl shadow-sm" style="animation-delay: 0.3s;">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">API Gateway Load</span>
-                    <span class="bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-xs px-2.5 py-1 rounded-lg font-extrabold shadow-sm">Optimal</span>
+                    <span class="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 text-[10px] px-2 py-0.5 rounded-md font-black">Optimal</span>
                 </div>
                 <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">99.98%</h3>
-                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1">Global uptime average</p>
+                <p class="text-slate-400 dark:text-slate-500 text-[11px] mt-1">Global uptime average</p>
             </div>
         </section>
 
         <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <section class="animate__animated animate__fadeInLeft md:col-span-2 card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm space-y-6">
-                <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700/60 pb-4">
-                    <h2 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">System Performance Monitor</h2>
-                    <button onclick="triggerEnhancedDiagnostics()" class="relative group overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-md active:scale-95 hover:shadow-purple-500/20 cursor-pointer">
-                        <span class="relative z-10">⚡ Run Diagnostics</span>
-                    </button>
+            <section class="animate__animated animate__fadeInLeft md:col-span-2 premium-card p-6 rounded-2xl shadow-sm space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">System Performance Monitor</h2>
+                    <button onclick="runDiagnostics()" class="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg active:scale-95 transition-all cursor-pointer">Run Diagnostics</button>
                 </div>
 
-                <div class="space-y-5">
+                <div class="space-y-4">
                     <div>
-                        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
+                        <div class="flex justify-between text-xs font-bold text-slate-400 dark:text-slate-500 mb-1.5">
                             <span>Cloud Storage Allocation</span>
-                            <span id="storage-text" class="font-mono text-blue-500">42%</span>
+                            <span id="storage-text" class="text-purple-500 font-mono font-bold">42%</span>
                         </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden p-[2px]">
-                            <div id="storage-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-1000 cubic-bezier(0.4, 0, 0.2, 1)" style="width: 42%;"></div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                            <div id="storage-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full transition-all duration-1000 ease-out" style="width: 42%;"></div>
                         </div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
+                        <div class="flex justify-between text-xs font-bold text-slate-400 dark:text-slate-500 mb-1.5">
                             <span>CPU Clusters Usage</span>
-                            <span id="cpu-text" class="font-mono text-purple-500">18%</span>
+                            <span id="cpu-text" class="text-blue-500 font-mono font-bold">18%</span>
                         </div>
-                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden p-[2px]">
-                            <div id="cpu-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full transition-all duration-1000 cubic-bezier(0.4, 0, 0.2, 1)" style="width: 18%;"></div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                            <div id="cpu-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-1000 ease-out" style="width: 18%;"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-4">
-                    <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Live Kernel Streams</p>
-                    <div id="console-log" class="bg-slate-950 text-emerald-400 font-mono text-xs p-5 rounded-xl h-44 overflow-y-auto space-y-2.5 shadow-xl border border-slate-800 leading-relaxed scrollbar-thin scrollbar-thumb-slate-800">
-                        <div class="opacity-80"><span class="text-slate-500">[09:14:22]</span> - <span class="text-cyan-400">⚡ System:</span> Initializing NexaFlow security protocols...</div>
-                        <div class="opacity-80"><span class="text-slate-500">[09:14:23]</span> - <span class="text-cyan-400">⚡ System:</span> Connecting securely to upstream server clusters...</div>
-                        <div class="opacity-80"><span class="text-slate-500">[09:14:25]</span> - <span class="text-emerald-400">✓ Node:</span> Synchronizations matching 100% stable.</div>
+                    <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">Live Kernel Stream Output</p>
+                    <div id="console-log" class="bg-slate-900 dark:bg-black text-emerald-400 font-mono text-xs p-5 rounded-xl h-44 overflow-y-auto space-y-2 border border-slate-800 shadow-inner">
+                        <div><span class="text-slate-500">[09:14:22]</span> Initializing NexaFlow security protocols...</div>
+                        <div><span class="text-slate-500">[09:14:23]</span> Connecting securely to upstream server clusters...</div>
+                        <div><span class="text-slate-500">[09:14:25]</span> Node synchronizations matching 100% stable.</div>
                     </div>
                 </div>
             </section>
 
-            <section class="animate__animated animate__fadeInRight card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm space-y-4" style="animation-delay: 0.1s;">
-                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Control Actions</h2>
-                <hr class="border-slate-100 dark:border-slate-700/60">
+            <section class="animate__animated animate__fadeInRight premium-card p-6 rounded-2xl shadow-sm space-y-4">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white">Control Actions</h2>
+                <hr class="border-slate-100 dark:border-slate-800">
                 
-                <div class="flex flex-col gap-3.5">
-                    <a href="products.html" class="group w-full text-center bg-purple-50 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 text-purple-700 hover:text-white font-bold py-3.5 rounded-xl transition-all text-sm border border-purple-100 dark:border-purple-900/30 active:scale-95 shadow-sm dark:bg-purple-950/20 dark:text-purple-400">
-                        📦 Manage Core Products
+                <div class="flex flex-col gap-3">
+                    <a href="products.html" class="w-full text-center bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 hover:text-white font-bold py-3.5 rounded-xl transition-all text-xs tracking-wide uppercase border border-purple-100 dark:border-purple-900/50 active:scale-95 shadow-sm">
+                        📦 Browse Store Products
                     </a>
-                    
-                    <button onclick="alert('Opening System Settings...')" class="group w-full text-left bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl transition-all text-sm border border-slate-200 dark:border-slate-700 flex justify-between items-center active:scale-98 cursor-pointer">
-                        <span class="flex items-center gap-2">⚙️ <span>Node Settings</span></span>
-                        <span class="text-slate-400 group-hover:translate-x-1.5 transition-transform">→</span>
+                    <button onclick="showFeatureAlert('Node Configuration')" class="group w-full text-left bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl transition-all text-xs font-bold border border-slate-200/60 dark:border-slate-800 flex justify-between items-center active:scale-98 cursor-pointer">
+                        <span>⚙️ Node Dashboard Settings</span>
+                        <span class="text-slate-400 group-hover:translate-x-1 transition-transform">→</span>
                     </button>
-                    
-                    <button onclick="alert('Generating financial overview reports...')" class="group w-full text-left bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl transition-all text-sm border border-slate-200 dark:border-slate-700 flex justify-between items-center active:scale-98 cursor-pointer">
-                        <span class="flex items-center gap-2">📊 <span>Export CSV Ledger</span></span>
-                        <span class="text-slate-400 group-hover:translate-x-1.5 transition-transform">→</span>
+                    <button onclick="showFeatureAlert('Ledger Export')" class="group w-full text-left bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl transition-all text-xs font-bold border border-slate-200/60 dark:border-slate-800 flex justify-between items-center active:scale-98 cursor-pointer">
+                        <span>📊 Export Secure CSV Ledger</span>
+                        <span class="text-slate-400 group-hover:translate-x-1 transition-transform">→</span>
                     </button>
                 </div>
             </section>
         </main>
 
-        <footer class="card-theme bg-slate-100 dark:bg-slate-800/40 text-center text-xs text-slate-400 dark:text-slate-500 p-5 rounded-xl border border-slate-200/40 dark:border-slate-700/30">
-            © 2026 NexaFlow Tech Solutions. Powered by GitHub Pages.
+        <footer class="premium-card text-center text-xs text-slate-400 dark:text-slate-500 p-5 rounded-xl shadow-sm">
+            © 2026 NexaFlow Tech Solutions. Powered by Production-Grade Engine.
         </footer>
     </div>
 
     <script>
-        // Dark Mode Controller
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        // Advanced Diagnostics Simulation
-        function triggerEnhancedDiagnostics() {
+        function runDiagnostics() {
             const consoleLog = document.getElementById('console-log');
             const now = new Date().toLocaleTimeString();
             
-            // Randomized safe hardware ranges
-            const newCpu = Math.floor(Math.random() * 55) + 25;
-            const newStorage = Math.floor(Math.random() * 20) + 50;
+            const newCpu = Math.floor(Math.random() * 60) + 20;
+            const newStorage = Math.floor(Math.random() * 30) + 40;
             
-            // Dynamic updates with smooth transitions
             document.getElementById('cpu-bar').style.width = newCpu + '%';
             document.getElementById('cpu-text').innerText = newCpu + '%';
             document.getElementById('storage-bar').style.width = newStorage + '%';
             document.getElementById('storage-text').innerText = newStorage + '%';
 
-            const dynamicLogs = [
-                `[${now}] - <span class="text-yellow-400">⚡ Warning:</span> Scanning active operational blocks...`,
-                `[${now}] - <span class="text-purple-400">⚙️ Load:</span> CPU core matrix shifting to ${newCpu}% workload load.`,
-                `[${now}] - <span class="text-blue-400">💾 Storage:</span> Network cloud allocation optimized to ${newStorage}%.`,
-                `[${now}] - <span class="text-emerald-400">✓ Diagnostics:</span> All pathways completely cleared. Status Green.`
+            const simulatedLogs = [
+                `[${now}] Triggering dynamic cluster health scan...`,
+                `[${now}] Security layers responding. Matrix integrity 100%.`,
+                `[${now}] CPU performance balanced to current cluster optimization (${newCpu}%).`
             ];
 
-            dynamicLogs.forEach((logText, index) => {
+            simulatedLogs.forEach((log, index) => {
                 setTimeout(() => {
-                    const line = document.createElement('div');
-                    line.className = 'animate__animated animate__fadeInLeft duration-300';
-                    line.innerHTML = logText;
-                    consoleLog.appendChild(line);
-                    
-                    // Auto-scroll logic
-                    consoleLog.scrollTo({
-                        top: consoleLog.scrollHeight,
-                        behavior: 'smooth'
-                    });
-                }, index * 350);
+                    const el = document.createElement('div');
+                    el.className = 'animate__animated animate__fadeInLeft text-purple-400';
+                    el.innerHTML = `<span class="text-slate-500">[${now}]</span> ${log}`;
+                    consoleLog.appendChild(el);
+                    consoleLog.scrollTop = consoleLog.scrollHeight;
+                }, index * 250);
             });
+        }
+
+        function showFeatureAlert(title) {
+            alert(`[System Notice]: ${title} initialize process launched smoothly.`);
         }
     </script>
 </body>
 </html>
+
