@@ -1,169 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaFlow Tech Solutions - Dashboard</title>
+    <title>NexaFlow Tech Solutions - Advanced Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <style>
-        /* Smooth hover pop for stats */
-        .stat-card { transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .stat-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.1); border-color: #8b5cf6; }
-        
-        /* Navigation link underline animation */
+        /* Modern Smooth Hover Effect for Cards */
+        .stat-card { 
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
+        .stat-card:hover { 
+            transform: translateY(-8px) scale(1.01); 
+            box-shadow: 0 25px 40px -15px rgba(139, 92, 246, 0.25);
+        }
+
+        /* Nav link custom sliding line */
         .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #8b5cf6; transition: width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 2px; 
+            bottom: -4px; 
+            left: 0; 
+            background: linear-gradient(90deg, #8b5cf6, #ec4899); 
+            transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
         .nav-link:hover::after { width: 100%; }
-        
-        /* Smooth loading bar transition */
-        .progress-bar { transition: width 1s ease-in-out; }
+
+        /* Dynamic Background Glows */
+        .glow-blob {
+            filter: blur(80px);
+            opacity: 0.4;
+            mix-blend-mode: multiply;
+            animation: floatGlow 12s infinite alternate;
+        }
+        .glow-blob-2 {
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: floatGlow 8s infinite alternate-reverse;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0px, 0px) scale(1); }
+            100% { transform: translate(40px, 60px) scale(1.2); }
+        }
+
+        /* Smooth custom transitions for dark mode toggle */
+        body { transition: background-color 0.4s ease, color 0.4s ease; }
+        .card-theme { transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 p-6 overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 p-4 md:p-8 min-h-screen relative overflow-x-hidden">
 
-    <div class="max-w-5xl mx-auto space-y-8">
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-300 dark:bg-purple-900/30 rounded-full glow-blob pointer-events-none"></div>
+    <div class="absolute bottom-[10%] right-[-5%] w-96 h-96 bg-blue-300 dark:bg-blue-900/30 rounded-full glow-blob-2 pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto space-y-8 relative z-10">
         
-        <header class="animate__animated animate__backInDown bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <header class="animate__animated animate__fadeInDown card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-purple-600">NexaFlow Console</h1>
-                <p class="text-gray-500 text-sm mt-1">Enterprise Management & Operational Analytics</p>
-                <nav class="flex gap-4 mt-4 text-sm font-semibold text-gray-600">
-                    <a href="index.html" class="nav-link text-purple-600">🏠 Dashboard</a>
-                    <a href="products.html" class="nav-link">📦 Products</a>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-3xl font-black bg-gradient-to-r align-middle from-purple-600 to-pink-500 bg-clip-text text-transparent">NexaFlow Console</h1>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 border border-purple-200/50">v2.4</span>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Enterprise Management & Operational Analytics</p>
+                <nav class="flex gap-6 mt-4 text-sm font-semibold">
+                    <a href="index.html" class="nav-link text-purple-600 dark:text-purple-400">🏠 Dashboard</a>
+                    <a href="products.html" class="nav-link text-slate-600 dark:text-slate-300">📦 Products</a>
                 </nav>
             </div>
-            <div class="bg-purple-50 text-purple-700 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 border border-purple-100">
-                <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping absolute"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-green-500 relative"></span>
-                System Operational
+            
+            <div class="flex flex-row md:flex-col items-end gap-3 w-full md:w-auto justify-between">
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm border border-slate-200 dark:border-slate-600 cursor-pointer" title="Toggle Theme">
+                    <span class="dark:hidden">🌙 Dark Mode</span>
+                    <span class="hidden dark:inline">☀️ Light Mode</span>
+                </button>
+                
+                <div class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-3 border border-emerald-100 dark:border-emerald-900/30 shadow-inner">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    System Operational
+                </div>
             </div>
         </header>
 
         <section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="animate__animated animate__fadeInLeft bg-white p-6 rounded-2xl border border-gray-100 shadow-sm stat-card" style="animation-delay: 0.1s;">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Monthly Revenue</span>
-                    <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded font-bold animate-pulse">+12.4%</span>
+            <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm stat-card" style="animation-delay: 0.1s;">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Monthly Revenue</span>
+                    <span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs px-2.5 py-1 rounded-lg font-extrabold shadow-sm animate-pulse">+12.4%</span>
                 </div>
-                <h3 class="text-2xl font-black text-gray-900">342,500 PKR</h3>
-                <p class="text-gray-400 text-xs mt-1">Compared to last month</p>
+                <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">342,500 <span class="text-lg font-bold text-purple-500">PKR</span></h3>
+                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1">Compared to last month</p>
             </div>
 
-            <div class="animate__animated animate__fadeInLeft bg-white p-6 rounded-2xl border border-gray-100 shadow-sm stat-card" style="animation-delay: 0.2s;">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Deployments</span>
-                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded font-bold">Live</span>
+            <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm stat-card" style="animation-delay: 0.2s;">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Deployments</span>
+                    <span class="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs px-2.5 py-1 rounded-lg font-extrabold shadow-sm">Live</span>
                 </div>
-                <h3 class="text-2xl font-black text-gray-900">1,240</h3>
-                <p class="text-gray-400 text-xs mt-1">Across active client nodes</p>
+                <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">1,240</h3>
+                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1">Across active client nodes</p>
             </div>
 
-            <div class="animate__animated animate__fadeInLeft bg-white p-6 rounded-2xl border border-gray-100 shadow-sm stat-card" style="animation-delay: 0.3s;">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">API Gateway Load</span>
-                    <span class="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded font-bold">Optimal</span>
+            <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm stat-card" style="animation-delay: 0.3s;">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">API Gateway Load</span>
+                    <span class="bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-xs px-2.5 py-1 rounded-lg font-extrabold shadow-sm">Optimal</span>
                 </div>
-                <h3 class="text-2xl font-black text-gray-900">99.98%</h3>
-                <p class="text-gray-400 text-xs mt-1">Global uptime average</p>
+                <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">99.98%</h3>
+                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1">Global uptime average</p>
             </div>
         </section>
 
         <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <section class="animate__animated animate__fadeInUp md:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-                <div class="flex justify-between items-center border-b border-gray-100 pb-4">
-                    <h2 class="text-xl font-bold text-gray-900">System Performance Monitor</h2>
-                    <button onclick="triggerLogSimulation()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-md active:scale-95 hover:shadow-purple-200">Run Diagnostics</button>
+            <section class="animate__animated animate__fadeInLeft md:col-span-2 card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700/60 pb-4">
+                    <h2 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">System Performance Monitor</h2>
+                    <button onclick="triggerEnhancedDiagnostics()" class="relative group overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-md active:scale-95 hover:shadow-purple-500/20 cursor-pointer">
+                        <span class="relative z-10">⚡ Run Diagnostics</span>
+                    </button>
                 </div>
 
-                <div class="space-y-4">
+                <div class="space-y-5">
                     <div>
-                        <div class="flex justify-between text-xs font-semibold text-gray-500 mb-1">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                             <span>Cloud Storage Allocation</span>
-                            <span id="storage-text">42%</span>
+                            <span id="storage-text" class="font-mono text-blue-500">42%</span>
                         </div>
-                        <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
-                            <div id="storage-bar" class="bg-blue-500 h-full progress-bar" style="width: 42%;"></div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden p-[2px]">
+                            <div id="storage-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-1000 cubic-bezier(0.4, 0, 0.2, 1)" style="width: 42%;"></div>
                         </div>
                     </div>
                     <div>
-                        <div class="flex justify-between text-xs font-semibold text-gray-500 mb-1">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                             <span>CPU Clusters Usage</span>
-                            <span id="cpu-text">18%</span>
+                            <span id="cpu-text" class="font-mono text-purple-500">18%</span>
                         </div>
-                        <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
-                            <div id="cpu-bar" class="bg-purple-500 h-full progress-bar" style="width: 18%;"></div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden p-[2px]">
+                            <div id="cpu-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full transition-all duration-1000 cubic-bezier(0.4, 0, 0.2, 1)" style="width: 18%;"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-4">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Live Kernel Streams</p>
-                    <div id="console-log" class="bg-gray-900 text-green-400 font-mono text-xs p-4 rounded-xl h-40 overflow-y-auto space-y-1.5 shadow-inner leading-relaxed">
-                        <div>[09:14:22] - Initializing NexaFlow security protocols...</div>
-                        <div>[09:14:23] - Connecting securely to upstream server clusters...</div>
-                        <div>[09:14:25] - Node synchronizations matching 100% stable.</div>
+                    <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Live Kernel Streams</p>
+                    <div id="console-log" class="bg-slate-950 text-emerald-400 font-mono text-xs p-5 rounded-xl h-44 overflow-y-auto space-y-2.5 shadow-xl border border-slate-800 leading-relaxed scrollbar-thin scrollbar-thumb-slate-800">
+                        <div class="opacity-80"><span class="text-slate-500">[09:14:22]</span> - <span class="text-cyan-400">⚡ System:</span> Initializing NexaFlow security protocols...</div>
+                        <div class="opacity-80"><span class="text-slate-500">[09:14:23]</span> - <span class="text-cyan-400">⚡ System:</span> Connecting securely to upstream server clusters...</div>
+                        <div class="opacity-80"><span class="text-slate-500">[09:14:25]</span> - <span class="text-emerald-400">✓ Node:</span> Synchronizations matching 100% stable.</div>
                     </div>
                 </div>
             </section>
 
-            <section class="animate__animated animate__fadeInUp bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4" style="animation-delay: 0.1s;">
-                <h2 class="text-xl font-bold text-gray-900">Control Actions</h2>
-                <hr class="border-gray-100">
+            <section class="animate__animated animate__fadeInRight card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm space-y-4" style="animation-delay: 0.1s;">
+                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Control Actions</h2>
+                <hr class="border-slate-100 dark:border-slate-700/60">
                 
-                <div class="flex flex-col gap-3">
-                    <a href="products.html" class="w-full text-center bg-purple-50 hover:bg-purple-600 text-purple-700 hover:text-white font-bold py-3 rounded-xl transition-all text-sm border border-purple-100 active:scale-95 shadow-sm">
+                <div class="flex flex-col gap-3.5">
+                    <a href="products.html" class="group w-full text-center bg-purple-50 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-500 text-purple-700 hover:text-white font-bold py-3.5 rounded-xl transition-all text-sm border border-purple-100 dark:border-purple-900/30 active:scale-95 shadow-sm dark:bg-purple-950/20 dark:text-purple-400">
                         📦 Manage Core Products
                     </a>
-                    <button onclick="alert('Opening System Settings...')" class="w-full text-left bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-3 rounded-xl transition-all text-sm border border-gray-200 flex justify-between items-center active:scale-98">
-                        <span>⚙️ Node Settings</span>
-                        <span class="text-gray-400 transition-transform group-hover:translate-x-1">→</span>
+                    
+                    <button onclick="alert('Opening System Settings...')" class="group w-full text-left bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl transition-all text-sm border border-slate-200 dark:border-slate-700 flex justify-between items-center active:scale-98 cursor-pointer">
+                        <span class="flex items-center gap-2">⚙️ <span>Node Settings</span></span>
+                        <span class="text-slate-400 group-hover:translate-x-1.5 transition-transform">→</span>
                     </button>
-                    <button onclick="alert('Generating financial overview reports...')" class="w-full text-left bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-3 rounded-xl transition-all text-sm border border-gray-200 flex justify-between items-center active:scale-98">
-                        <span>📊 Export CSV Ledger</span>
-                        <span class="text-gray-400">→</span>
+                    
+                    <button onclick="alert('Generating financial overview reports...')" class="group w-full text-left bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl transition-all text-sm border border-slate-200 dark:border-slate-700 flex justify-between items-center active:scale-98 cursor-pointer">
+                        <span class="flex items-center gap-2">📊 <span>Export CSV Ledger</span></span>
+                        <span class="text-slate-400 group-hover:translate-x-1.5 transition-transform">→</span>
                     </button>
                 </div>
             </section>
         </main>
 
-        <footer class="bg-gray-100 text-center text-xs text-gray-400 p-4 rounded-xl">
+        <footer class="card-theme bg-slate-100 dark:bg-slate-800/40 text-center text-xs text-slate-400 dark:text-slate-500 p-5 rounded-xl border border-slate-200/40 dark:border-slate-700/30">
             © 2026 NexaFlow Tech Solutions. Powered by GitHub Pages.
         </footer>
     </div>
 
     <script>
-        function triggerLogSimulation() {
+        // Dark Mode Controller
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Advanced Diagnostics Simulation
+        function triggerEnhancedDiagnostics() {
             const consoleLog = document.getElementById('console-log');
             const now = new Date().toLocaleTimeString();
             
-            // Randomly change the progress bars during diagnostics!
-            const newCpu = Math.floor(Math.random() * 60) + 20;
-            const newStorage = Math.floor(Math.random() * 30) + 40;
+            // Randomized safe hardware ranges
+            const newCpu = Math.floor(Math.random() * 55) + 25;
+            const newStorage = Math.floor(Math.random() * 20) + 50;
             
+            // Dynamic updates with smooth transitions
             document.getElementById('cpu-bar').style.width = newCpu + '%';
             document.getElementById('cpu-text').innerText = newCpu + '%';
             document.getElementById('storage-bar').style.width = newStorage + '%';
             document.getElementById('storage-text').innerText = newStorage + '%';
 
-            const randomLogs = [
-                `[${now}] - Running system integrity check...`,
-                `[${now}] - CPU clusters spiking to ${newCpu}% workload allocation.`,
-                `[${now}] - Cloud Storage usage dynamically adjusted to ${newStorage}%.`,
-                `[${now}] - All diagnostic pathways running optimally. Clear.`
+            const dynamicLogs = [
+                `[${now}] - <span class="text-yellow-400">⚡ Warning:</span> Scanning active operational blocks...`,
+                `[${now}] - <span class="text-purple-400">⚙️ Load:</span> CPU core matrix shifting to ${newCpu}% workload load.`,
+                `[${now}] - <span class="text-blue-400">💾 Storage:</span> Network cloud allocation optimized to ${newStorage}%.`,
+                `[${now}] - <span class="text-emerald-400">✓ Diagnostics:</span> All pathways completely cleared. Status Green.`
             ];
 
-            randomLogs.forEach((logText, index) => {
+            dynamicLogs.forEach((logText, index) => {
                 setTimeout(() => {
                     const line = document.createElement('div');
-                    line.className = 'animate__animated animate__fadeInLeft';
-                    line.innerText = logText;
+                    line.className = 'animate__animated animate__fadeInLeft duration-300';
+                    line.innerHTML = logText;
                     consoleLog.appendChild(line);
-                    consoleLog.scrollTop = consoleLog.scrollHeight;
-                }, index * 300);
+                    
+                    // Auto-scroll logic
+                    consoleLog.scrollTo({
+                        top: consoleLog.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }, index * 350);
             });
         }
     </script>
 </body>
 </html>
-
