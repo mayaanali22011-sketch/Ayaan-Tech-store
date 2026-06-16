@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaFlow Tech Solutions - Dashboard</title>
+    <title>NexaFlow Tech Solutions - Premium App</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
-        /* Smooth Custom Hover Animations */
-        .hover-bounce {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Ultra Smooth Premium Animations */
+        .premium-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .hover-bounce:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04);
-            border-color: #3b82f6;
+        .premium-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 30px -5px rgba(59, 130, 246, 0.2);
+            border-color: #2563eb;
+        }
+
+        /* Nav Link Hover Effect */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
     </style>
 </head>
@@ -26,25 +45,31 @@
         <header class="animate__animated animate__fadeInDown bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-extrabold text-blue-600 animate__animated animate__pulse animate__infinite animate__slower">NexaFlow Tech Solutions</h1>
-                <p class="text-gray-500 text-sm mt-1">Industry: Software & IT Services | Founded: 2022</p>
+                <p class="text-gray-500 text-sm mt-1">Industry: Software & IT Services</p>
+                
+                <nav class="flex gap-4 mt-4 text-sm font-semibold text-gray-600">
+                    <a href="index.html" class="nav-link text-blue-600">🏠 Dashboard</a>
+                    <a href="products.html" class="nav-link">📦 Products</a>
+                    <a href="analytics.html" class="nav-link">📊 Analytics</a>
+                </nav>
             </div>
-            <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold">
+            <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold animate__animated animate__rubberBand animate__delay-1s">
                 📍 Sector 5, Tech Hub, Karachi
             </div>
         </header>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="animate__animated animate__fadeInUp bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover-bounce" style="animation-delay: 0.2s;">
+            <div class="animate__animated animate__backInLeft bg-white p-6 rounded-2xl shadow-sm border border-gray-100 premium-card">
                 <p class="text-sm text-gray-400 font-medium uppercase tracking-wider">Active Users</p>
                 <h3 class="text-3xl font-bold text-gray-900 mt-2">1,240</h3>
                 <span class="text-xs text-green-500 font-medium">↑ 12% this month</span>
             </div>
-            <div class="animate__animated animate__fadeInUp bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover-bounce" style="animation-delay: 0.4s;">
+            <div class="animate__animated animate__fadeInUp bg-white p-6 rounded-2xl shadow-sm border border-gray-100 premium-card" style="animation-delay: 0.2s;">
                 <p class="text-sm text-gray-400 font-medium uppercase tracking-wider">Bounce Rate</p>
                 <h3 class="text-3xl font-bold text-gray-900 mt-2">42%</h3>
                 <span class="text-xs text-gray-500 font-medium">Optimal performance</span>
             </div>
-            <div class="animate__animated animate__fadeInUp bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover-bounce" style="animation-delay: 0.6s;">
+            <div class="animate__animated animate__backInRight bg-white p-6 rounded-2xl shadow-sm border border-gray-100 premium-card">
                 <p class="text-sm text-gray-400 font-medium uppercase tracking-wider">Avg. Session Duration</p>
                 <h3 class="text-3xl font-bold text-gray-900 mt-2">2m 45s</h3>
                 <span class="text-xs text-green-500 font-medium">↑ 0.5s improvement</span>
@@ -53,8 +78,11 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <section class="animate__animated animate__fadeInLeft lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100" style="animation-delay: 0.8s; animation-fill-mode: backwards;">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Monthly Sales Performance (Q1)</h2>
+            <section class="animate__animated animate__zoomIn bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-900">Monthly Sales Performance (Q1)</h2>
+                    <a href="analytics.html" class="text-sm text-blue-600 font-semibold hover:underline">Full Report →</a>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
@@ -62,61 +90,44 @@
                                 <th class="pb-3 font-semibold">Month</th>
                                 <th class="pb-3 font-semibold">Total Sales</th>
                                 <th class="pb-3 font-semibold">New Customers</th>
-                                <th class="pb-3 font-semibold">Conversion</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50 text-sm">
-                            <tr class="hover:bg-gray-50 transition-colors">
+                            <tr class="hover:bg-blue-50/50 transition-colors duration-200">
                                 <td class="py-4 font-semibold text-gray-700">January</td>
                                 <td class="py-4 text-gray-600">PKR 450,000</td>
-                                <td class="py-4 text-gray-600">120</td>
-                                <td class="py-4 text-blue-600 font-medium">3.2%</td>
+                                <td class="py-4 text-blue-600 font-medium">120</td>
                             </tr>
-                            <tr class="hover:bg-gray-50 transition-colors">
+                            <tr class="hover:bg-blue-50/50 transition-colors duration-200">
                                 <td class="py-4 font-semibold text-gray-700">February</td>
                                 <td class="py-4 text-gray-600">PKR 520,000</td>
-                                <td class="py-4 text-gray-600">145</td>
-                                <td class="py-4 text-blue-600 font-medium">3.5%</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="py-4 font-semibold text-gray-700">March</td>
-                                <td class="py-4 text-gray-600">PKR 610,000</td>
-                                <td class="py-4 text-gray-600">180</td>
-                                <td class="py-4 text-blue-600 font-medium">4.1%</td>
+                                <td class="py-4 text-blue-600 font-medium">145</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <section class="animate__animated animate__fadeInRight bg-white p-6 rounded-2xl shadow-sm border border-gray-100" style="animation-delay: 0.8s; animation-fill-mode: backwards;">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Top Selling Products</h2>
+            <section class="animate__animated animate__zoomIn bg-white p-6 rounded-2xl shadow-sm border border-gray-100" style="animation-delay: 0.2s;">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-900">Top Selling Products</h2>
+                    <a href="products.html" class="text-sm text-blue-600 font-semibold hover:underline">See All</a>
+                </div>
                 <div class="space-y-4">
-                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 hover-bounce cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="font-bold text-gray-800 text-sm">CloudSync Dashboard</h4>
-                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full mt-1 inline-block">SaaS Application</span>
-                            </div>
-                            <span class="text-xs font-bold text-gray-500">340 Sold</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-2 font-medium">4,999 PKR <span class="text-xs text-gray-400">/ month</span></p>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 hover-bounce cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="font-bold text-gray-800 text-sm">SecureGate VPN</h4>
-                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full mt-1 inline-block">Cybersecurity</span>
-                            </div>
-                            <span class="text-xs font-bold text-gray-500">510 Sold</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-2 font-medium">1,500 PKR <span class="text-xs text-gray-400">/ month</span></p>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 premium-card cursor-pointer">
+                        <h4 class="font-bold text-gray-800 text-sm">CloudSync Dashboard</h4>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full mt-1 inline-block">SaaS</span>
                     </div>
                 </div>
             </section>
 
         </div>
 
-        <footer class="animate__animated animate__fadeIn bg-gray-100 text-center text-xs text-gray-400 p-4 rounded-xl" style="animation-delay: 1.2s; animation-fill-mode: backwards;">
-            
-            
+        <footer class="text-center text-xs text-gray-400 bg-gray-100 p-4 rounded-xl">
+            ⚠️ <strong>Note:</strong> Multi-page layout with ultra animations enabled.
+        </footer>
+
+    </div>
+
+</body>
+</html>
