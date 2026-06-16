@@ -3,200 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaFlow Tech Solutions - Premium Products</title>
+    <title>NexaFlow Solutions - Premium Catalog</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
-        /* Smooth Scale Hover for Product Cards */
-        .product-card { 
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        body { transition: background-color 0.4s ease, color 0.4s ease; }
+        .premium-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .product-card:hover { 
-            transform: translateY(-10px) scale(1.02); 
-            box-shadow: 0 30px 50px -15px rgba(139, 92, 246, 0.3);
+        .dark .premium-card {
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid rgba(51, 65, 85, 0.5);
         }
-
-        /* Nav Link Underline */
-        .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after { 
-            content: ''; 
-            position: absolute; 
-            width: 0; 
-            height: 2px; 
-            bottom: -4px; 
-            left: 0; 
-            background: linear-gradient(90deg, #8b5cf6, #ec4899); 
-            transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        .product-hover:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 40px 60px -20px rgba(139, 92, 246, 0.25);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .nav-link:hover::after { width: 100%; }
 
-        /* Smooth Dark/Light transition */
-        body { transition: background-color 0.4s ease, color 0.4s ease; }
-        .card-theme { transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
+        /* Smooth Slid Modals overlays */
+        #cart-modal, #checkout-modal {
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+            opacity: 0; visibility: hidden;
+        }
+        #cart-modal.show, #checkout-modal.show { opacity: 1; visibility: visible; }
 
-        /* Modals Animation Logic */
-        #cart-modal, #checkout-modal { 
-            transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.4s ease; 
-            opacity: 0; 
-            visibility: hidden; 
+        /* Toast Popup Alerts Styles */
+        #toast-box {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(100px); opacity: 0;
         }
-        #cart-modal.show, #checkout-modal.show { 
-            opacity: 1; 
-            visibility: visible; 
-        }
+        #toast-box.active { transform: translateY(0); opacity: 1; }
 
-        /* Floating Decorative Blobs */
-        .glow-blob {
-            filter: blur(90px);
-            opacity: 0.35;
-            animation: floatGlow 14s infinite alternate;
+        /* Skeleton Flash Loading Effect */
+        @keyframes ShimmerEffect {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
-        @keyframes floatGlow {
-            0% { transform: translate(0px, 0px) scale(1); }
-            100% { transform: translate(50px, 40px) scale(1.15); }
+        .skeleton-loader {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: ShimmerEffect 1.5s infinite linear;
+        }
+        .dark .skeleton-loader {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+            background-size: 200% 100%;
         }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 p-4 md:p-8 min-h-screen relative overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 p-4 md:p-8 min-h-screen relative overflow-x-hidden">
 
-    <div class="absolute top-[-5%] right-[-10%] w-96 h-96 bg-purple-300 dark:bg-purple-900/20 rounded-full glow-blob pointer-events-none"></div>
-    <div class="absolute bottom-[20%] left-[-10%] w-96 h-96 bg-pink-300 dark:bg-pink-900/20 rounded-full glow-blob pointer-events-none" style="animation-delay: -3s;"></div>
+    <div id="toast-box" class="bg-slate-900 dark:bg-purple-600 text-white font-bold text-xs py-3.5 px-5 rounded-xl shadow-2xl flex items-center gap-2 border border-slate-800">
+        <span>🚀</span> <span id="toast-message">Product synced to deployment cart successfully!</span>
+    </div>
+
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
 
     <div class="max-w-6xl mx-auto space-y-8 relative z-10">
         
-        <header class="animate__animated animate__fadeInDown card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <header class="animate__animated animate__fadeInDown premium-card p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
             <div>
                 <div class="flex items-center gap-3">
-                    <h1 class="text-3xl font-black bg-gradient-to-r align-middle from-purple-600 to-pink-500 bg-clip-text text-transparent">Our Tech Products</h1>
-                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 border border-purple-200/50">Store</span>
+                    <h1 class="text-3xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">Our Tech Products</h1>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-pink-50 dark:bg-pink-950 text-pink-600 dark:text-pink-400 border border-pink-100 dark:border-pink-900">CATALOG</span>
                 </div>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Premium Software Solutions & Enterprise Tools</p>
-                <nav class="flex gap-6 mt-4 text-sm font-semibold">
-                    <a href="index.html" class="nav-link text-slate-600 dark:text-slate-300">🏠 Dashboard</a>
+                <p class="text-slate-400 dark:text-slate-500 text-xs mt-1 font-medium">Premium Software Solutions & Enterprise Core Modules</p>
+                <nav class="flex gap-6 mt-4 text-xs font-bold tracking-wide uppercase">
+                    <a href="index.html" class="nav-link text-slate-500 dark:text-slate-400">🏠 Dashboard</a>
                     <a href="products.html" class="nav-link text-purple-600 dark:text-purple-400">📦 Products</a>
                 </nav>
             </div>
             
             <div class="flex flex-row md:flex-col items-end gap-3 w-full md:w-auto justify-between">
-                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm border border-slate-200 dark:border-slate-600 cursor-pointer text-xs font-bold" title="Toggle Theme">
-                    <span class="dark:hidden">🌙 Dark Mode</span>
-                    <span class="hidden dark:inline">☀️ Light Mode</span>
-                </button>
-                
-                <div onclick="toggleCartModal(true)" class="relative bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-3 rounded-xl cursor-pointer transition-all active:scale-95 flex items-center gap-3 font-bold shadow-md hover:shadow-purple-500/20">
-                    <span>🛒 View Cart</span>
-                    <span id="cart-count" class="bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full transition-transform">0</span>
+                <button onclick="document.documentElement.classList.toggle('dark')" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all cursor-pointer">🌓 Theme</button>
+                <div onclick="toggleCartModal(true)" class="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-3 rounded-xl font-bold text-xs tracking-wider uppercase flex items-center gap-3 cursor-pointer shadow-lg active:scale-95 transition-transform hover:shadow-purple-500/20">
+                    <span>🛒 System Cart</span>
+                    <span id="cart-count" class="bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full">0</span>
                 </div>
             </div>
         </header>
 
-        <section class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-4 rounded-xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div class="relative w-full sm:w-72">
-                <input type="text" id="search-input" oninput="filterProducts()" placeholder="Search tools..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white">
-            </div>
+        <section class="animate__animated animate__fadeInUp premium-card p-4 rounded-xl shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <input type="text" id="search-input" oninput="filterProducts()" placeholder="🔍 Deep scan inventory query..." class="w-full sm:w-72 bg-slate-100 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-purple-500 text-slate-800 dark:text-white">
             <div class="flex gap-3 w-full sm:w-auto">
-                <select id="category-filter" onchange="filterProducts()" class="w-1/2 sm:w-44 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-slate-300">
-                    <option value="all">All Categories</option>
-                    <option value="SaaS Platform">SaaS Platform</option>
-                    <option value="Cybersecurity">Cybersecurity</option>
+                <select id="category-filter" onchange="filterProducts()" class="w-1/2 sm:w-44 bg-slate-100 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none dark:text-slate-300">
+                    <option value="all">All Matrix Modules</option>
+                    <option value="SaaS Platform">SaaS Platforms</option>
+                    <option value="Cybersecurity">Cybersecurity Tools</option>
                 </select>
-                <select id="price-sort" onchange="filterProducts()" class="w-1/2 sm:w-44 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-slate-300">
-                    <option value="default">Sort By</option>
+                <select id="price-sort" onchange="filterProducts()" class="w-1/2 sm:w-44 bg-slate-100 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none dark:text-slate-300">
+                    <option value="default">Sort Parameters</option>
                     <option value="low-high">Price: Low to High</option>
                     <option value="high-low">Price: High to Low</option>
                 </select>
             </div>
         </section>
 
-        <section id="products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></section>
+        <section id="products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="premium-card rounded-2xl h-80 p-6 space-y-4 overflow-hidden">
+                <div class="skeleton-loader w-full h-40 rounded-xl"></div>
+                <div class="skeleton-loader w-1/3 h-5 rounded-md"></div>
+                <div class="skeleton-loader w-3/4 h-8 rounded-md"></div>
+            </div>
+            <div class="premium-card rounded-2xl h-80 p-6 space-y-4 overflow-hidden">
+                <div class="skeleton-loader w-full h-40 rounded-xl"></div>
+                <div class="skeleton-loader w-1/3 h-5 rounded-md"></div>
+                <div class="skeleton-loader w-3/4 h-8 rounded-md"></div>
+            </div>
+        </section>
 
-        <footer class="card-theme bg-slate-100 dark:bg-slate-800/40 text-center text-xs text-slate-400 dark:text-slate-500 p-5 rounded-xl border border-slate-200/40 dark:border-slate-700/30">
-            © 2026 NexaFlow Tech Solutions. Powered by GitHub Pages.
+        <footer class="premium-card text-center text-xs text-slate-400 dark:text-slate-500 p-5 rounded-xl shadow-sm">
+            © 2026 NexaFlow Tech Solutions. Powered by Production-Grade Engine.
         </footer>
     </div>
 
-    <div id="cart-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="toggleCartModal(false)">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-transform duration-300 translate-y-10 border border-slate-100 dark:border-slate-700" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3 mb-4">
-                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Your System Cart</h3>
-                <button onclick="toggleCartModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-2xl cursor-pointer">&times;</button>
+    <div id="cart-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center p-4" onclick="toggleCartModal(false)">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-transform" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Your Module Cart</h3>
+                <button onclick="toggleCartModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-2xl">&times;</button>
             </div>
-            <div id="cart-items" class="space-y-3 max-h-64 overflow-y-auto pr-1"></div>
-            <div class="border-t border-slate-100 dark:border-slate-700 pt-4 mt-4 space-y-4">
-                <div class="flex justify-between items-center font-bold text-lg">
-                    <span class="text-slate-600 dark:text-slate-400">Total Amount:</span>
+            <div id="cart-items" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
+            <div class="border-t border-slate-100 dark:border-slate-800 pt-4 mt-4 space-y-4">
+                <div class="flex justify-between items-center font-bold text-base">
+                    <span class="text-slate-400">Total Net Amount:</span>
                     <span id="cart-total" class="text-2xl font-black text-purple-600 dark:text-purple-400">0 PKR</span>
                 </div>
-                <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer">Proceed to Checkout</button>
+                <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold py-3.5 rounded-xl text-xs tracking-wider uppercase shadow-lg active:scale-95 transition-all cursor-pointer">Proceed to Core Checkout</button>
             </div>
         </div>
     </div>
 
-    <div id="checkout-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-55 flex items-center justify-center p-4" onclick="toggleCheckoutModal(false)">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-transform duration-300 translate-y-10 border border-slate-100 dark:border-slate-700" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3 mb-4">
-                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Order Information</h3>
-                <button onclick="toggleCheckoutModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-2xl cursor-pointer">&times;</button>
+    <div id="checkout-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-55 flex items-center justify-center p-4" onclick="toggleCheckoutModal(false)">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 dark:border-slate-800 transform transition-transform" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Order Information Routing</h3>
+                <button onclick="toggleCheckoutModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-2xl">&times;</button>
             </div>
             <form id="whatsapp-form" onsubmit="sendWhatsAppOrder(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Full Name</label>
-                    <input type="text" id="cust-name" required placeholder="John Doe" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Full Identity Name</label>
+                    <input type="text" id="cust-name" required placeholder="e.g. John Doe" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs font-bold focus:outline-none focus:border-purple-500 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Phone Number</label>
-                    <input type="tel" id="cust-phone" required placeholder="03001234567" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Secure Contact Number</label>
+                    <input type="tel" id="cust-phone" required placeholder="e.g. 03001234567" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs font-bold focus:outline-none focus:border-purple-500 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Delivery / Office Address</label>
-                    <textarea id="cust-address" required rows="3" placeholder="Your full deployment or office address..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white resize-none"></textarea>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Deployment/Office Destination Address</label>
+                    <textarea id="cust-address" required rows="3" placeholder="Enter complete verification delivery map address..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs font-bold focus:outline-none focus:border-purple-500 dark:text-white resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
-                    💬 Send Order via WhatsApp
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs tracking-wider uppercase shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer transition-all">
+                    💬 Router Secure Order via WhatsApp
                 </button>
             </form>
         </div>
     </div>
 
     <script>
-        const products = [
+        const database = [
             { id: "NX-401", title: "CloudSync Dashboard", category: "SaaS Platform", description: "Automate your business data backup across multiple cloud servers with ultra-high encryption.", price: 4999, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500" },
             { id: "NX-902", title: "SecureGate VPN", category: "Cybersecurity", description: "Protect your office network and remote employee workstations from malware and phishing attacks.", price: 1500, image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500" }
         ];
 
         let cart = JSON.parse(localStorage.getItem('nexaflow_cart')) || [];
 
-        // Dark Mode Logic
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        function renderProducts(productsToRender) {
+        function renderProducts(items) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
-            if (productsToRender.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 card-theme bg-white dark:bg-slate-800/60 rounded-2xl border text-slate-400">No products found matching setup criteria.</div>`;
+            
+            if (items.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 premium-card text-slate-400 text-xs font-bold">No data matches current vector filters.</div>`;
                 return;
             }
-            productsToRender.forEach((product, index) => {
-                const delay = (index * 0.1) + 0.1;
+
+            items.forEach((product, idx) => {
+                const delay = (idx * 0.08) + 0.05;
                 grid.innerHTML += `
-                    <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/50 product-card overflow-hidden" style="animation-delay: ${delay}s;">
-                        <div class="relative overflow-hidden group">
-                            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="animate__animated animate__fadeInUp premium-card product-hover rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm" style="animation-delay: ${delay}s;">
+                        <div class="relative overflow-hidden group h-44">
+                            <img src="${product.image}" alt="${product.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
                         </div>
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 px-3 py-1 rounded-full text-xs font-bold">${product.category}</span>
-                                <span class="text-slate-400 dark:text-slate-500 text-sm font-medium">ID: #${product.id}</span>
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center text-[10px] font-black uppercase mb-1.5">
+                                    <span class="text-purple-600 bg-purple-50 dark:bg-purple-950/50 px-2 py-0.5 rounded">${product.category}</span>
+                                    <span class="text-slate-400">TAG: #${product.id}</span>
+                                </div>
+                                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">${product.title}</h3>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs mt-1 leading-relaxed font-medium">${product.description}</p>
                             </div>
-                            <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">${product.title}</h3>
-                            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2 leading-relaxed">${product.description}</p>
-                            <div class="mt-6 flex justify-between items-center border-t border-slate-100 dark:border-slate-700/60 pt-4">
-                                <div><p class="text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight">${product.price.toLocaleString()} <span class="text-xs font-bold">PKR</span></p></div>
-                                <button onclick="addToCart('${product.id}')" class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer">Buy Now</button>
+                            <div class="flex justify-between items-center border-t border-slate-100 dark:border-slate-800 pt-3 mt-2">
+                                <p class="text-xl font-black text-purple-600 dark:text-purple-400 tracking-tight">${product.price.toLocaleString()} <span class="text-[10px] font-bold text-slate-400">PKR</span></p>
+                                <button onclick="addToCart('${product.id}')" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-md cursor-pointer">Buy Deployment</button>
                             </div>
                         </div>
                     </div>`;
@@ -204,64 +216,58 @@
         }
 
         function filterProducts() {
-            const searchQuery = document.getElementById('search-input').value.toLowerCase();
-            const selectedCategory = document.getElementById('category-filter').value;
-            const priceSort = document.getElementById('price-sort').value;
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('price-sort').value;
             
-            let filtered = products.filter(p => (p.title.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery)) && (selectedCategory === 'all' || p.category === selectedCategory));
+            let result = database.filter(p => (p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)) && (category === 'all' || p.category === category));
             
-            if (priceSort === 'low-high') filtered.sort((a, b) => a.price - b.price);
-            if (priceSort === 'high-low') filtered.sort((a, b) => b.price - a.price);
-            renderProducts(filtered);
+            if (sort === 'low-high') result.sort((a, b) => a.price - b.price);
+            if (sort === 'high-low') result.sort((a, b) => b.price - a.price);
+            renderProducts(result);
+        }
+
+        function showToastNotification(msg) {
+            const toast = document.getElementById('toast-box');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 3000);
         }
 
         function toggleCartModal(open) {
-            const modal = document.getElementById('cart-modal');
-            const modalBox = modal.querySelector('div');
-            if (open) { 
-                modal.classList.add('show'); 
-                modalBox.style.transform = "translateY(0)"; 
-            } else { 
-                modalBox.style.transform = "translateY(40px)"; 
-                modal.classList.remove('show'); 
-            }
+            const m = document.getElementById('cart-modal');
+            const box = m.querySelector('div');
+            if (open) { m.classList.add('show'); box.style.transform = "translateY(0)"; }
+            else { box.style.transform = "translateY(30px)"; m.classList.remove('show'); }
         }
 
         function toggleCheckoutModal(open) {
-            const modal = document.getElementById('checkout-modal');
-            const modalBox = modal.querySelector('div');
-            if (open) { 
-                modal.classList.add('show'); 
-                modalBox.style.transform = "translateY(0)"; 
-            } else { 
-                modalBox.style.transform = "translateY(40px)"; 
-                modal.classList.remove('show'); 
-            }
+            const m = document.getElementById('checkout-modal');
+            const box = m.querySelector('div');
+            if (open) { m.classList.add('show'); box.style.transform = "translateY(0)"; }
+            else { box.style.transform = "translateY(30px)"; m.classList.remove('show'); }
         }
 
         function openCheckoutModal() {
-            if (cart.length === 0) return alert("Your cart is empty!");
+            if (cart.length === 0) return alert("Your routing core cart configuration is empty!");
             toggleCartModal(false);
             setTimeout(() => toggleCheckoutModal(true), 300);
         }
 
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                cart.push(product);
+        function addToCart(id) {
+            const item = database.find(p => p.id === id);
+            if (item) {
+                cart.push(item);
                 updateCartUI();
-                
-                // Micro-Bounce Animation Effect on Cart Icon Badge
-                const badge = document.getElementById('cart-count');
-                badge.className = "bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full inline-block animate__animated animate__bounceIn scale-110";
-                badge.addEventListener('animationend', () => { 
-                    badge.className = "bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full"; 
-                }, {once: true});
+                showToastNotification(`${item.title} attached to cart configuration allocation!`);
+                const b = document.getElementById('cart-count');
+                b.className = "bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full inline-block animate__animated animate__bounceIn";
+                b.addEventListener('animationend', () => { b.className = "bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full"; }, {once: true});
             }
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
+        function removeFromCart(idx) {
+            cart.splice(idx, 1);
             updateCartUI();
         }
 
@@ -269,65 +275,62 @@
             localStorage.setItem('nexaflow_cart', JSON.stringify(cart));
             document.getElementById('cart-count').innerText = cart.length;
             const container = document.getElementById('cart-items');
-            const totalElement = document.getElementById('cart-total');
+            const totalEl = document.getElementById('cart-total');
             
             if (cart.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 dark:text-slate-500 text-sm text-center py-6">Your cart is currently empty.</p>`;
-                totalElement.innerText = `0 PKR`;
+                container.innerHTML = `<p class="text-slate-400 dark:text-slate-500 text-xs text-center py-6 font-medium">System deployment matrix cart is empty.</p>`;
+                totalEl.innerText = `0 PKR`;
                 return;
             }
 
             container.innerHTML = '';
             let total = 0;
-            cart.forEach((item, index) => {
+            cart.forEach((item, idx) => {
                 total += item.price;
                 container.innerHTML += `
-                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-100 dark:border-slate-700 animate__animated animate__fadeInUp duration-200">
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200/40 dark:border-slate-800">
                         <div>
-                            <p class="font-bold text-slate-800 dark:text-slate-200 text-sm">${item.title}</p>
-                            <p class="text-xs text-purple-600 dark:text-purple-400 font-bold">${item.price.toLocaleString()} PKR</p>
+                            <p class="font-bold text-slate-800 dark:text-slate-200 text-xs">${item.title}</p>
+                            <p class="text-[11px] text-purple-500 font-bold">${item.price.toLocaleString()} PKR</p>
                         </div>
-                        <button onclick="removeFromCart(${index})" class="text-red-500 text-xs font-bold bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/40 px-2.5 py-1.5 rounded-lg cursor-pointer">Remove</button>
+                        <button onclick="removeFromCart(${idx})" class="text-[10px] font-black text-red-500 bg-red-50 dark:bg-red-950/40 px-2.5 py-1.5 rounded-lg cursor-pointer">Disconnect</button>
                     </div>`;
             });
-            totalElement.innerText = `${total.toLocaleString()} PKR`;
+            totalEl.innerText = `${total.toLocaleString()} PKR`;
         }
 
-        function sendWhatsAppOrder(event) {
-            event.preventDefault();
-            
+        function sendWhatsAppOrder(e) {
+            e.preventDefault();
             const name = document.getElementById('cust-name').value;
             const phone = document.getElementById('cust-phone').value;
             const address = document.getElementById('cust-address').value;
-            const whatsappNumber = "923001234567"; 
-
-            let itemDetails = "";
-            let netTotal = 0;
             
-            cart.forEach((item, idx) => {
-                itemDetails += `${idx + 1}. ${item.title} (%23${item.id}) - ${item.price.toLocaleString()} PKR%0A`;
-                netTotal += item.price;
+            let details = "";
+            let net = 0;
+            cart.forEach((item, i) => {
+                details += `${i + 1}. ${item.title} (%23${item.id}) - ${item.price.toLocaleString()} PKR%0A`;
+                net += item.price;
             });
 
-            const message = `*🔥 NEW ORDER RECEIVED - NEXAFLOW* %0A%0A` +
-                            `*👤 Customer Details:*%0A` +
-                            `Name: ${encodeURIComponent(name)}%0A` +
-                            `Phone: ${encodeURIComponent(phone)}%0A` +
-                            `Address: ${encodeURIComponent(address)}%0A%0A` +
-                            `*📦 Items Ordered:*%0A${itemDetails}%0A` +
-                            `*💰 Net Payable:* ${netTotal.toLocaleString()} PKR%0A%0A` +
-                            `Please confirm dispatch allocation status.`;
+            const text = `*🔥 NEXAFLOW SECURE PROTOCOL INCOMING ORDER* %0A%0A` +
+                         `*👤 Client Identity:*%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0ADestination: ${encodeURIComponent(address)}%0A%0A` +
+                         `*📦 System Architecture Stack:*%0A${details}%0A` +
+                         `*💰 Total Valuation:* ${net.toLocaleString()} PKR%0A%0A` +
+                         `Verification pending dispatch setup approval.`;
 
-            const url = `https://wa.me/${whatsappNumber}?text=${message}`;
-            window.open(url, '_blank');
-
-            cart = [];
-            updateCartUI();
+            window.open(`https://wa.me/923001234567?text=${text}`, '_blank');
+            cart = []; updateCartUI();
             document.getElementById('whatsapp-form').reset();
             toggleCheckoutModal(false);
         }
 
-        window.onload = () => { renderProducts(products); updateCartUI(); };
+        // Fake Preloader delay effect to show off the skeleton animations
+        window.onload = () => {
+            setTimeout(() => {
+                renderProducts(database);
+                updateCartUI();
+            }, 800); // 800ms loading shimmer animation placeholder display
+        };
     </script>
 </body>
 </html>
