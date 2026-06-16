@@ -1,51 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaFlow Tech Solutions - Products</title>
+    <title>NexaFlow Tech Solutions - Premium Products</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <style>
-        .product-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .product-card:hover { transform: translateY(-10px) scale(1.01); box-shadow: 0 25px 30px -5px rgba(139, 92, 246, 0.2); border-color: #8b5cf6; }
+        /* Smooth Scale Hover for Product Cards */
+        .product-card { 
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
+        .product-card:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            box-shadow: 0 30px 50px -15px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Nav Link Underline */
         .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #8b5cf6; transition: width 0.3s ease; }
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 2px; 
+            bottom: -4px; 
+            left: 0; 
+            background: linear-gradient(90deg, #8b5cf6, #ec4899); 
+            transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
         .nav-link:hover::after { width: 100%; }
-        #cart-modal, #checkout-modal { transition: opacity 0.3s ease, visibility 0.3s ease; opacity: 0; visibility: hidden; }
-        #cart-modal.show, #checkout-modal.show { opacity: 1; visibility: visible; }
+
+        /* Smooth Dark/Light transition */
+        body { transition: background-color 0.4s ease, color 0.4s ease; }
+        .card-theme { transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
+
+        /* Modals Animation Logic */
+        #cart-modal, #checkout-modal { 
+            transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.4s ease; 
+            opacity: 0; 
+            visibility: hidden; 
+        }
+        #cart-modal.show, #checkout-modal.show { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+
+        /* Floating Decorative Blobs */
+        .glow-blob {
+            filter: blur(90px);
+            opacity: 0.35;
+            animation: floatGlow 14s infinite alternate;
+        }
+        @keyframes floatGlow {
+            0% { transform: translate(0px, 0px) scale(1); }
+            100% { transform: translate(50px, 40px) scale(1.15); }
+        }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 p-6 overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 p-4 md:p-8 min-h-screen relative overflow-x-hidden">
 
-    <div class="max-w-5xl mx-auto space-y-8">
+    <div class="absolute top-[-5%] right-[-10%] w-96 h-96 bg-purple-300 dark:bg-purple-900/20 rounded-full glow-blob pointer-events-none"></div>
+    <div class="absolute bottom-[20%] left-[-10%] w-96 h-96 bg-pink-300 dark:bg-pink-900/20 rounded-full glow-blob pointer-events-none" style="animation-delay: -3s;"></div>
+
+    <div class="max-w-6xl mx-auto space-y-8 relative z-10">
         
-        <header class="animate__animated animate__backInDown bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <header class="animate__animated animate__fadeInDown card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-purple-600">Our Tech Products</h1>
-                <p class="text-gray-500 text-sm mt-1">Premium Software Solutions & Enterprise Tools</p>
-                <nav class="flex gap-4 mt-4 text-sm font-semibold text-gray-600">
-                    <a href="index.html" class="nav-link">🏠 Dashboard</a>
-                    <a href="products.html" class="nav-link text-purple-600">📦 Products</a>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-3xl font-black bg-gradient-to-r align-middle from-purple-600 to-pink-500 bg-clip-text text-transparent">Our Tech Products</h1>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 border border-purple-200/50">Store</span>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Premium Software Solutions & Enterprise Tools</p>
+                <nav class="flex gap-6 mt-4 text-sm font-semibold">
+                    <a href="index.html" class="nav-link text-slate-600 dark:text-slate-300">🏠 Dashboard</a>
+                    <a href="products.html" class="nav-link text-purple-600 dark:text-purple-400">📦 Products</a>
                 </nav>
             </div>
-            <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-                <div onclick="toggleCartModal(true)" class="relative bg-purple-100 hover:bg-purple-200 text-purple-700 p-3 rounded-xl cursor-pointer transition-all active:scale-95 flex items-center gap-2 font-bold shadow-sm">
-                    <span>🛒 Cart</span>
-                    <span id="cart-count" class="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+            
+            <div class="flex flex-row md:flex-col items-end gap-3 w-full md:w-auto justify-between">
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm border border-slate-200 dark:border-slate-600 cursor-pointer text-xs font-bold" title="Toggle Theme">
+                    <span class="dark:hidden">🌙 Dark Mode</span>
+                    <span class="hidden dark:inline">☀️ Light Mode</span>
+                </button>
+                
+                <div onclick="toggleCartModal(true)" class="relative bg-gradient-to-r from-purple-600 to-pink-500 text-white px-5 py-3 rounded-xl cursor-pointer transition-all active:scale-95 flex items-center gap-3 font-bold shadow-md hover:shadow-purple-500/20">
+                    <span>🛒 View Cart</span>
+                    <span id="cart-count" class="bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full transition-transform">0</span>
                 </div>
             </div>
         </header>
 
-        <section class="animate__animated animate__fadeInRight bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <input type="text" id="search-input" oninput="filterProducts()" placeholder="🔍 Search products..." class="w-full sm:w-64 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-purple-500">
-            <div class="flex gap-2 w-full sm:w-auto">
-                <select id="category-filter" onchange="filterProducts()" class="w-1/2 sm:w-auto bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+        <section class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md p-4 rounded-xl border border-slate-200/60 dark:border-slate-700/50 shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full sm:w-72">
+                <input type="text" id="search-input" oninput="filterProducts()" placeholder="Search tools..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white">
+            </div>
+            <div class="flex gap-3 w-full sm:w-auto">
+                <select id="category-filter" onchange="filterProducts()" class="w-1/2 sm:w-44 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-slate-300">
                     <option value="all">All Categories</option>
                     <option value="SaaS Platform">SaaS Platform</option>
                     <option value="Cybersecurity">Cybersecurity</option>
                 </select>
-                <select id="price-sort" onchange="filterProducts()" class="w-1/2 sm:w-auto bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+                <select id="price-sort" onchange="filterProducts()" class="w-1/2 sm:w-44 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-slate-300">
                     <option value="default">Sort By</option>
                     <option value="low-high">Price: Low to High</option>
                     <option value="high-low">Price: High to Low</option>
@@ -55,48 +111,48 @@
 
         <section id="products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></section>
 
-        <footer class="bg-gray-100 text-center text-xs text-gray-400 p-4 rounded-xl">
+        <footer class="card-theme bg-slate-100 dark:bg-slate-800/40 text-center text-xs text-slate-400 dark:text-slate-500 p-5 rounded-xl border border-slate-200/40 dark:border-slate-700/30">
             © 2026 NexaFlow Tech Solutions. Powered by GitHub Pages.
         </footer>
     </div>
 
-    <div id="cart-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onclick="toggleCartModal(false)">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl transform transition-transform duration-300 translate-y-10" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center border-b pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-900">Your Cart</h3>
-                <button onclick="toggleCartModal(false)" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+    <div id="cart-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="toggleCartModal(false)">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-transform duration-300 translate-y-10 border border-slate-100 dark:border-slate-700" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3 mb-4">
+                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Your System Cart</h3>
+                <button onclick="toggleCartModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-2xl cursor-pointer">&times;</button>
             </div>
-            <div id="cart-items" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
-            <div class="border-t pt-4 mt-4 space-y-4">
+            <div id="cart-items" class="space-y-3 max-h-64 overflow-y-auto pr-1"></div>
+            <div class="border-t border-slate-100 dark:border-slate-700 pt-4 mt-4 space-y-4">
                 <div class="flex justify-between items-center font-bold text-lg">
-                    <span>Total Amount:</span>
-                    <span id="cart-total" class="text-purple-600">0 PKR</span>
+                    <span class="text-slate-600 dark:text-slate-400">Total Amount:</span>
+                    <span id="cart-total" class="text-2xl font-black text-purple-600 dark:text-purple-400">0 PKR</span>
                 </div>
-                <button onclick="openCheckoutModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition-all shadow-md active:scale-95">Proceed to Checkout</button>
+                <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer">Proceed to Checkout</button>
             </div>
         </div>
     </div>
 
-    <div id="checkout-modal" class="fixed inset-0 bg-black/50 z-55 flex items-center justify-center p-4" onclick="toggleCheckoutModal(false)">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl transform transition-transform duration-300 translate-y-10" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center border-b pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-900">Order Information</h3>
-                <button onclick="toggleCheckoutModal(false)" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+    <div id="checkout-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-55 flex items-center justify-center p-4" onclick="toggleCheckoutModal(false)">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl transform transition-transform duration-300 translate-y-10 border border-slate-100 dark:border-slate-700" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3 mb-4">
+                <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Order Information</h3>
+                <button onclick="toggleCheckoutModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-2xl cursor-pointer">&times;</button>
             </div>
             <form id="whatsapp-form" onsubmit="sendWhatsAppOrder(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
-                    <input type="text" id="cust-name" required placeholder="John Doe" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                    <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Full Name</label>
+                    <input type="text" id="cust-name" required placeholder="John Doe" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Phone Number</label>
-                    <input type="tel" id="cust-phone" required placeholder="03001234567" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                    <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Phone Number</label>
+                    <input type="tel" id="cust-phone" required placeholder="03001234567" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Delivery / Office Address</label>
-                    <textarea id="cust-address" required rows="3" placeholder="Your full deployment or office address..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 resize-none"></textarea>
+                    <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Delivery / Office Address</label>
+                    <textarea id="cust-address" required rows="3" placeholder="Your full deployment or office address..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 dark:text-white resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2">
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
                     💬 Send Order via WhatsApp
                 </button>
             </form>
@@ -109,31 +165,38 @@
             { id: "NX-902", title: "SecureGate VPN", category: "Cybersecurity", description: "Protect your office network and remote employee workstations from malware and phishing attacks.", price: 1500, image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500" }
         ];
 
-        // Advanced local storage caching mechanism
         let cart = JSON.parse(localStorage.getItem('nexaflow_cart')) || [];
+
+        // Dark Mode Logic
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
 
         function renderProducts(productsToRender) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
             if (productsToRender.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border text-gray-400">No products found.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-center py-12 card-theme bg-white dark:bg-slate-800/60 rounded-2xl border text-slate-400">No products found matching setup criteria.</div>`;
                 return;
             }
             productsToRender.forEach((product, index) => {
-                const delay = (index * 0.15) + 0.1;
+                const delay = (index * 0.1) + 0.1;
                 grid.innerHTML += `
-                    <div class="animate__animated animate__fadeInUp bg-white rounded-2xl shadow-sm border border-gray-100 product-card overflow-hidden" style="animation-delay: ${delay}s;">
-                        <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
+                    <div class="animate__animated animate__fadeInUp card-theme bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/50 product-card overflow-hidden" style="animation-delay: ${delay}s;">
+                        <div class="relative overflow-hidden group">
+                            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
+                        </div>
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-4">
-                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-bold">${product.category}</span>
-                                <span class="text-gray-400 text-sm font-medium">ID: #${product.id}</span>
+                                <span class="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 px-3 py-1 rounded-full text-xs font-bold">${product.category}</span>
+                                <span class="text-slate-400 dark:text-slate-500 text-sm font-medium">ID: #${product.id}</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-900">${product.title}</h3>
-                            <p class="text-gray-600 text-sm mt-2">${product.description}</p>
-                            <div class="mt-6 flex justify-between items-center border-t border-gray-100 pt-4">
-                                <div><p class="text-xl font-extrabold text-purple-600">${product.price.toLocaleString()} PKR</p></div>
-                                <button onclick="addToCart('${product.id}')" class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold px-4 py-2 rounded-xl transition-all shadow-md active:scale-95">Buy Now</button>
+                            <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">${product.title}</h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2 leading-relaxed">${product.description}</p>
+                            <div class="mt-6 flex justify-between items-center border-t border-slate-100 dark:border-slate-700/60 pt-4">
+                                <div><p class="text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight">${product.price.toLocaleString()} <span class="text-xs font-bold">PKR</span></p></div>
+                                <button onclick="addToCart('${product.id}')" class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer">Buy Now</button>
                             </div>
                         </div>
                     </div>`;
@@ -144,7 +207,9 @@
             const searchQuery = document.getElementById('search-input').value.toLowerCase();
             const selectedCategory = document.getElementById('category-filter').value;
             const priceSort = document.getElementById('price-sort').value;
+            
             let filtered = products.filter(p => (p.title.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery)) && (selectedCategory === 'all' || p.category === selectedCategory));
+            
             if (priceSort === 'low-high') filtered.sort((a, b) => a.price - b.price);
             if (priceSort === 'high-low') filtered.sort((a, b) => b.price - a.price);
             renderProducts(filtered);
@@ -153,15 +218,25 @@
         function toggleCartModal(open) {
             const modal = document.getElementById('cart-modal');
             const modalBox = modal.querySelector('div');
-            if (open) { modal.classList.add('show'); modalBox.style.transform = "translateY(0)"; }
-            else { modalBox.style.transform = "translateY(40px)"; modal.classList.remove('show'); }
+            if (open) { 
+                modal.classList.add('show'); 
+                modalBox.style.transform = "translateY(0)"; 
+            } else { 
+                modalBox.style.transform = "translateY(40px)"; 
+                modal.classList.remove('show'); 
+            }
         }
 
         function toggleCheckoutModal(open) {
             const modal = document.getElementById('checkout-modal');
             const modalBox = modal.querySelector('div');
-            if (open) { modal.classList.add('show'); modalBox.style.transform = "translateY(0)"; }
-            else { modalBox.style.transform = "translateY(40px)"; modal.classList.remove('show'); }
+            if (open) { 
+                modal.classList.add('show'); 
+                modalBox.style.transform = "translateY(0)"; 
+            } else { 
+                modalBox.style.transform = "translateY(40px)"; 
+                modal.classList.remove('show'); 
+            }
         }
 
         function openCheckoutModal() {
@@ -175,9 +250,13 @@
             if (product) {
                 cart.push(product);
                 updateCartUI();
+                
+                // Micro-Bounce Animation Effect on Cart Icon Badge
                 const badge = document.getElementById('cart-count');
-                badge.className = "bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded-full inline-block animate__animated animate__bounceIn";
-                badge.addEventListener('animationend', () => { badge.className = "bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded-full"; }, {once: true});
+                badge.className = "bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full inline-block animate__animated animate__bounceIn scale-110";
+                badge.addEventListener('animationend', () => { 
+                    badge.className = "bg-white text-purple-600 text-xs font-black px-2.5 py-0.5 rounded-full"; 
+                }, {once: true});
             }
         }
 
@@ -193,7 +272,7 @@
             const totalElement = document.getElementById('cart-total');
             
             if (cart.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-sm text-center py-4">Your cart is currently empty.</p>`;
+                container.innerHTML = `<p class="text-slate-400 dark:text-slate-500 text-sm text-center py-6">Your cart is currently empty.</p>`;
                 totalElement.innerText = `0 PKR`;
                 return;
             }
@@ -203,32 +282,28 @@
             cart.forEach((item, index) => {
                 total += item.price;
                 container.innerHTML += `
-                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-100 dark:border-slate-700 animate__animated animate__fadeInUp duration-200">
                         <div>
-                            <p class="font-bold text-gray-800 text-sm">${item.title}</p>
-                            <p class="text-xs text-purple-600 font-semibold">${item.price.toLocaleString()} PKR</p>
+                            <p class="font-bold text-slate-800 dark:text-slate-200 text-sm">${item.title}</p>
+                            <p class="text-xs text-purple-600 dark:text-purple-400 font-bold">${item.price.toLocaleString()} PKR</p>
                         </div>
-                        <button onclick="removeFromCart(${index})" class="text-red-500 text-xs font-bold bg-red-50 hover:bg-red-100 px-2 py-1 rounded-lg">Remove</button>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 text-xs font-bold bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/40 px-2.5 py-1.5 rounded-lg cursor-pointer">Remove</button>
                     </div>`;
             });
             totalElement.innerText = `${total.toLocaleString()} PKR`;
         }
 
-        // WhatsApp Custom Form Routing Engine
         function sendWhatsAppOrder(event) {
             event.preventDefault();
             
             const name = document.getElementById('cust-name').value;
             const phone = document.getElementById('cust-phone').value;
             const address = document.getElementById('cust-address').value;
-            
-            // Yahan apna ya client ka WhatsApp number dalein (country code ke sath, bina zeros/plus sign ke)
             const whatsappNumber = "923001234567"; 
 
             let itemDetails = "";
             let netTotal = 0;
             
-            // Map items dynamically to structured string text
             cart.forEach((item, idx) => {
                 itemDetails += `${idx + 1}. ${item.title} (%23${item.id}) - ${item.price.toLocaleString()} PKR%0A`;
                 netTotal += item.price;
@@ -246,7 +321,6 @@
             const url = `https://wa.me/${whatsappNumber}?text=${message}`;
             window.open(url, '_blank');
 
-            // Reset operations
             cart = [];
             updateCartUI();
             document.getElementById('whatsapp-form').reset();
@@ -257,3 +331,4 @@
     </script>
 </body>
 </html>
+
